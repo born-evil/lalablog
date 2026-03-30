@@ -1,0 +1,254 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  leftLinkHref?: string;
+  leftLinkLabel?: string;
+}
+
+const {
+  title,
+  description = "A minimal public blog for writing, art, and photography.",
+  leftLinkHref = "/blog/",
+  leftLinkLabel = "Archive"
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="header-side header-left">
+          <a class="site-link" href={leftLinkHref}>{leftLinkLabel}</a>
+        </div>
+        <div class="header-home">
+          <a class="home-flower" href="/" aria-label="Home">✿</a>
+        </div>
+        <div class="header-side header-right">
+          <nav aria-label="Primary">
+            <ul class="nav-list">
+              <li><a href="/gallery/">Gallery</a></li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      <main id="page-top">
+        <slot />
+      </main>
+    </div>
+
+    <script is:inline>
+      (() => {
+        const ensureImageOverlay = () => {
+          let overlay = document.querySelector(".image-overlay");
+          if (overlay) return overlay;
+
+          overlay = document.createElement("div");
+          overlay.className = "image-overlay";
+          overlay.innerHTML = `
+            <button class="image-overlay-backdrop" aria-label="Close enlarged image"></button>
+            <div class="image-overlay-panel">
+              <button class="image-overlay-close" aria-label="Close enlarged image">Close</button>
+              <img class="image-overlay-img" alt="" />
+            </div>
+          `;
+
+          document.body.appendChild(overlay);
+
+          const closeOverlay = () => overlay.classList.remove("is-open");
+
+          overlay.querySelector(".image-overlay-backdrop")?.addEventListener("click", closeOverlay);
+          overlay.querySelector(".image-overlay-close")?.addEventListener("click", closeOverlay);
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") closeOverlay();
+          });
+
+          return overlay;
+        };
+
+        const enhancePostImages = () => {
+          const overlay = ensureImageOverlay();
+          const overlayImage = overlay.querySelector(".image-overlay-img");
+
+          document.querySelectorAll(".post-body img").forEach((image) => {
+            if (image.closest(".post-image-button")) return;
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "post-image-button";
+            image.parentNode?.insertBefore(button, image);
+            button.appendChild(image);
+
+            button.addEventListener("click", () => {
+              overlayImage?.setAttribute("src", image.currentSrc || image.src);
+              overlayImage?.setAttribute("alt", image.alt || "");
+              overlay.classList.add("is-open");
+            });
+          });
+        };
+
+        const enhanceGalleryLightbox = () => {
+          const getOpenLightbox = () => {
+            const currentHash = window.location.hash;
+            if (!currentHash.startsWith("#gallery-")) return null;
+            return document.querySelector(currentHash);
+          };
+
+          document.addEventListener("keydown", (event) => {
+            const openLightbox = getOpenLightbox();
+            if (!openLightbox) return;
+
+            if (event.key === "ArrowLeft") {
+              const previousLink = openLightbox.querySelector(".lightbox-arrow-left");
+              if (previousLink instanceof HTMLAnchorElement) {
+                window.location.hash = previousLink.getAttribute("href") ?? "";
+                event.preventDefault();
+              }
+            }
+
+            if (event.key === "ArrowRight") {
+              const nextLink = openLightbox.querySelector(".lightbox-arrow-right");
+              if (nextLink instanceof HTMLAnchorElement) {
+                window.location.hash = nextLink.getAttribute("href") ?? "";
+                event.preventDefault();
+              }
+            }
+          });
+        };
+
+        const scheduleFish = () => {
+          const header = document.querySelector(".site-header");
+          const bubbleSymbols = ["˚｡", "∘˙", "˚.•", "♪", "♫", "𝄞"];
+          const fishSongs = [
+            "https://www.youtube.com/watch?v=YuUx4DTpYs0",
+            "https://www.youtube.com/watch?v=uSpIKqaFAcM&list=OLAK5uy_mv5N57oZeNyc6kDFPWJ1FM30I4mSRCtpE",
+            "https://www.youtube.com/watch?v=xvzvvcHIKK8",
+            "https://www.youtube.com/watch?v=bcfKQxh0Apg",
+            "https://www.youtube.com/watch?v=FQdLWlvgHOg",
+            "https://www.youtube.com/watch?v=dLUX2MYpMCo&pp=ygUXdGhlIGFmdGVybm9vbiB3ZSB0cmllZCA%3D",
+            "https://www.youtube.com/watch?v=i_gnF-OUh7Y&pp=ygUbZGVlIGl0IG1heSBhbGwgZW5kIHRvbW9ycm930gcJCdkKAYcqIYzv",
+            "https://www.youtube.com/watch?v=qumXaS_Lw-4&pp=ygUhd2hlbiB0aGUgbGlnaHRzIGdvIG91dCBuYWtlZCBleWVz",
+            "https://www.youtube.com/watch?v=bn6lfljADKs&pp=ygU4cnVuZGdhbmcgdW0gZGllIHRyYW5zemVuZGVudGFsZSBzw6R1bGUgZGVyIHNpbmd1bGFyaXTDpHQ%3D",
+            "https://www.youtube.com/watch?v=oFKkq5b2Yd8&pp=ygUXcHN5Y2hvcGF0aCBjbGVyaWMgcmVtaXg%3D",
+            "https://www.youtube.com/watch?v=IOlcjXQS_QE&pp=ygUUZGF2ZSBiaXhieSBkcnVnIHNvbmc%3D",
+            "https://www.youtube.com/watch?v=SETXNhxh1qU&pp=ygUZdW5jZXJ0YWlueSB3aWxsIGhhdW50IHlvdQ%3D%3D",
+            "https://www.youtube.com/watch?v=X5eb3MNqupg",
+            "https://www.youtube.com/watch?v=Jq0xsVMkbm4&pp=ygUKbSB0aGUgY3VyZdIHCQnZCgGHKiGM7w%3D%3D",
+            "https://www.youtube.com/watch?v=CZYcuznnlfc&pp=ygUSZW50b21iZWQgYnkgd2ludGVy",
+            "https://www.youtube.com/watch?v=4JyqBm1fMMA&pp=ygURcmFpbnkgZGV2aWwgaWxrYWU%3D",
+            "https://www.youtube.com/watch?v=ubvc-KU2YIc&pp=ygUZbm92ZW1iZXIgMjEgbWFuYW1pIGtha3Vkb9IHCQnZCgGHKiGM7w%3D%3D",
+            "https://www.youtube.com/watch?v=I_wfJ_p6PE4&pp=ygUTbG9uZWx5IG5vY3RpbHVjZW50cw%3D%3D"
+          ];
+          const fishSongStorageKey = "fish-song-progress";
+
+          const getSongIndex = () => {
+            try {
+              const storedValue = window.localStorage.getItem(fishSongStorageKey);
+              const parsedValue = Number.parseInt(storedValue ?? "0", 10);
+              return Number.isNaN(parsedValue) ? 0 : parsedValue % fishSongs.length;
+            } catch {
+              return 0;
+            }
+          };
+
+          const advanceSongIndex = () => {
+            try {
+              const nextIndex = (getSongIndex() + 1) % fishSongs.length;
+              window.localStorage.setItem(fishSongStorageKey, String(nextIndex));
+            } catch {
+              return;
+            }
+          };
+
+          const spawnFish = () => {
+            const fish = document.createElement("a");
+            const fromLeft = Math.random() < 0.5;
+            const durations = [18, 22, 26, 30];
+            const duration = durations[Math.floor(Math.random() * durations.length)];
+            const headerBottom = header?.getBoundingClientRect().bottom ?? 96;
+            const minTop = Math.max(headerBottom + 20, 100);
+            const maxTop = Math.max(minTop + 10, window.innerHeight - 72);
+            const top = minTop + Math.random() * (maxTop - minTop);
+            const songIndex = getSongIndex();
+
+            fish.className = `swim-fish${fromLeft ? "" : " reverse"}`;
+            fish.textContent = fromLeft ? "><₊‧˚₊‧(•>" : "<•)˚₊‧><";
+            fish.href = fishSongs[songIndex];
+            fish.target = "_blank";
+            fish.rel = "noopener noreferrer";
+            fish.setAttribute("aria-label", `Open fish song ${songIndex + 1}`);
+            fish.title = `Fish song ${songIndex + 1}`;
+            fish.style.top = `${top}px`;
+            fish.style.animationDuration = `${duration}s`;
+            document.body.appendChild(fish);
+
+            fish.addEventListener(
+              "click",
+              () => {
+                advanceSongIndex();
+              },
+              { once: true }
+            );
+
+            const bubbleInterval = window.setInterval(() => {
+              const bubble = document.createElement("div");
+              bubble.className = `fish-bubble${fromLeft ? "" : " reverse"}`;
+              bubble.textContent = bubbleSymbols[Math.floor(Math.random() * bubbleSymbols.length)];
+              bubble.style.top = `${top + (Math.random() * 18 - 9)}px`;
+
+              const fishRect = fish.getBoundingClientRect();
+              const bubbleOffset = 18;
+
+              if (fromLeft) {
+                bubble.style.left = `${fishRect.left - bubbleOffset}px`;
+              } else {
+                bubble.style.left = `${fishRect.right + bubbleOffset}px`;
+              }
+
+              document.body.appendChild(bubble);
+              window.setTimeout(() => bubble.remove(), 4200);
+            }, 1400);
+
+            window.setTimeout(() => {
+              window.clearInterval(bubbleInterval);
+              fish.remove();
+            }, duration * 1000 + 1500);
+          };
+
+          const queueNextFish = () => {
+            const minDelay = 150000;
+            const maxDelay = 300000;
+            const delay = minDelay + Math.random() * (maxDelay - minDelay);
+
+            window.setTimeout(() => {
+              if (document.visibilityState === "visible") spawnFish();
+              queueNextFish();
+            }, delay);
+          };
+
+          const initialDelay = 45000 + Math.random() * 45000;
+          window.setTimeout(() => {
+            if (document.visibilityState === "visible") spawnFish();
+            queueNextFish();
+          }, initialDelay);
+        };
+
+        enhancePostImages();
+        enhanceGalleryLightbox();
+        scheduleFish();
+      })();
+    </script>
+  </body>
+</html>
