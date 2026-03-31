@@ -7,7 +7,7 @@
   --content-width: 42rem;
   --page-width: 58rem;
   color-scheme: light;
-  font-family: "Georgia", "Times New Roman", serif;
+  font-family: "Courier New", monospace;
 }
 
 * {
@@ -25,7 +25,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   line-height: 1.65;
-  font-size: 0.98rem;
+  font-size: 0.86rem;
 }
 
 a {
@@ -66,13 +66,13 @@ img {
 }
 
 .site-link {
-  font-size: 0.88rem;
+  font-size: 0.76rem;
   font-weight: 400;
   text-decoration: none;
 }
 
 .home-flower {
-  font-size: 1.45rem;
+  font-size: 1.75rem;
   text-decoration: none;
   transition: color 160ms ease;
 }
@@ -90,7 +90,7 @@ img {
 }
 
 .nav-list a {
-  font-size: 0.88rem;
+  font-size: 0.76rem;
   text-decoration: none;
 }
 
@@ -114,7 +114,7 @@ img {
 .meta {
   margin: 0 0 0.75rem;
   color: var(--muted);
-  font-size: 0.84rem;
+  font-size: 0.72rem;
 }
 
 h1,
@@ -134,23 +134,23 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(1.3rem, 2.3vw, 1.5rem);
+  font-size: clamp(1rem, 1.8vw, 1.14rem);
   max-width: 18ch;
   margin-bottom: 0.4rem;
 }
 
 h2 {
-  font-size: 1.12rem;
+  font-size: 0.9rem;
   margin-bottom: 0.3rem;
 }
 
 h3 {
-  font-size: 1.02rem;
+  font-size: 0.86rem;
   margin-bottom: 0.55rem;
 }
 
 .lede {
-  font-size: 0.98rem;
+  font-size: 0.86rem;
   color: var(--muted);
   max-width: 36rem;
 }
@@ -173,7 +173,7 @@ h3 {
 
 .post-body,
 .prose {
-  font-size: 0.98rem;
+  font-size: 0.92rem;
 }
 
 .post {
