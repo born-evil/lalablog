@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE_DESCRIPTION } from "../consts";
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
@@ -11,7 +10,7 @@ const latestPost = posts[0];
 const { Content } = await render(latestPost);
 ---
 
-<BaseLayout title="Home" description={SITE_DESCRIPTION}>
+<BaseLayout title="Home">
   <article class="post">
     <header class="post-header">
       <p class="meta">{latestPost.data.date.toLocaleDateString("en-GB", {

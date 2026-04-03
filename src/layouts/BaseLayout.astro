@@ -10,7 +10,7 @@ interface Props {
 
 const {
   title,
-  description = "A minimal public blog for writing, art, and photography.",
+  description,
   leftLinkHref = "/blog/",
   leftLinkLabel = "Archive"
 } = Astro.props;
@@ -23,7 +23,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
     <title>{title}</title>
-    <meta name="description" content={description} />
+    {description && <meta name="description" content={description} />}
   </head>
   <body>
     <div class="page-shell">

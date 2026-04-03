@@ -15,7 +15,7 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BaseLayout title="Entry" description={post.data.description}>
+<BaseLayout title="Entry">
   <article class="post">
     <header class="post-header">
       <p class="meta">{post.data.date.toLocaleDateString("en-GB", {

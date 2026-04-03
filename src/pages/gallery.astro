@@ -8,7 +8,7 @@ const items = (await getCollection("gallery")).sort(
 );
 ---
 
-<BaseLayout title="Gallery" description="Art and photography">
+<BaseLayout title="Gallery">
   <div class="gallery-grid">
     {
       items.map((item, index) => {
