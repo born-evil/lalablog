@@ -1,0 +1,114 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+interface GalleryItem {
+  slug: string;
+  data: {
+    title: string;
+    caption?: string;
+    image: any;
+  };
+}
+
+interface Props {
+  items: GalleryItem[];
+  currentPage: number;
+  totalPages: number;
+}
+
+const { items, currentPage, totalPages } = Astro.props;
+
+const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+const pageHref = (page: number) => (page === 1 ? "/gallery/" : `/gallery/${page}/`);
+---
+
+<BaseLayout title="Gallery">
+  <div class="gallery-grid">
+    {
+      items.map((item, index) => {
+        const previousItem = items[(index - 1 + items.length) % items.length];
+        const nextItem = items[(index + 1) % items.length];
+
+        return (
+          <>
+            <article class="gallery-item">
+              <a href={`#gallery-${item.slug}`} class="gallery-thumb">
+                <Image
+                  src={item.data.image}
+                  alt={item.data.caption ?? item.data.title}
+                  width={600}
+                  height={600}
+                  fit="cover"
+                  quality={90}
+                  loading="lazy"
+                />
+              </a>
+            </article>
+
+            <div
+              id={`gallery-${item.slug}`}
+              class="lightbox"
+              aria-modal="true"
+              data-gallery-lightbox
+            >
+              <a href="#page-top" class="lightbox-backdrop" aria-label="Close enlarged image"></a>
+              <div class="lightbox-panel">
+                <a href="#page-top" class="lightbox-close" aria-label="Close enlarged image">Close</a>
+                {items.length > 1 && (
+                  <>
+                    <a
+                      href={`#gallery-${previousItem.slug}`}
+                      class="lightbox-arrow lightbox-arrow-left"
+                      aria-label="Previous image"
+                    >
+                      ←
+                    </a>
+                    <a
+                      href={`#gallery-${nextItem.slug}`}
+                      class="lightbox-arrow lightbox-arrow-right"
+                      aria-label="Next image"
+                    >
+                      →
+                    </a>
+                  </>
+                )}
+                <Image
+                  src={item.data.image}
+                  alt={item.data.caption ?? item.data.title}
+                  width={1600}
+                  fit="inside"
+                  quality={95}
+                />
+                <div class="lightbox-copy">
+                  <h2>{item.data.title}</h2>
+                  {item.data.caption && <p>{item.data.caption}</p>}
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      })
+    }
+  </div>
+
+  {
+    totalPages > 1 && (
+      <nav class="gallery-pagination" aria-label="Gallery pages">
+        {
+          pageNumbers.map((pageNumber) =>
+            pageNumber === currentPage ? (
+              <span class="gallery-page-link is-current" aria-current="page">
+                {pageNumber}
+              </span>
+            ) : (
+              <a href={pageHref(pageNumber)} class="gallery-page-link">
+                {pageNumber}
+              </a>
+            )
+          )
+        }
+      </nav>
+    )
+  }
+</BaseLayout>

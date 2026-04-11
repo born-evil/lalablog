@@ -32,6 +32,11 @@ a {
   color: inherit;
   text-decoration-thickness: 0.06em;
   text-underline-offset: 0.14em;
+  transition: color 160ms ease;
+}
+
+a:hover {
+  color: #ebc3d2;
 }
 
 img {
@@ -199,8 +204,8 @@ h3 {
 }
 
 .post-image-button:hover {
-  background: radial-gradient(circle at center, rgba(219, 138, 169, 0.4) 0%, rgba(219, 138, 169, 0.2) 40%, rgba(219, 138, 169, 0.08) 62%, rgba(255, 255, 255, 0) 82%);
-  box-shadow: 0 0 1.6rem rgba(219, 138, 169, 0.24);
+  background: radial-gradient(circle at center, rgba(219, 138, 169, 0.72) 0%, rgba(219, 138, 169, 0.42) 38%, rgba(219, 138, 169, 0.2) 62%, rgba(255, 255, 255, 0) 84%);
+  box-shadow: 0 0 1.9rem rgba(219, 138, 169, 0.44);
 }
 
 .post-body img {
@@ -216,6 +221,7 @@ h3 {
   gap: 1rem;
   width: 100%;
   margin-inline: auto;
+  margin-bottom: 2rem;
 }
 
 .gallery-item {
@@ -232,8 +238,8 @@ h3 {
 }
 
 .gallery-thumb:hover {
-  background: radial-gradient(circle at center, rgba(219, 138, 169, 0.4) 0%, rgba(219, 138, 169, 0.2) 40%, rgba(219, 138, 169, 0.08) 62%, rgba(255, 255, 255, 0) 82%);
-  box-shadow: 0 0 1.6rem rgba(219, 138, 169, 0.24);
+  background: radial-gradient(circle at center, rgba(219, 138, 169, 0.72) 0%, rgba(219, 138, 169, 0.42) 38%, rgba(219, 138, 169, 0.2) 62%, rgba(255, 255, 255, 0) 84%);
+  box-shadow: 0 0 1.9rem rgba(219, 138, 169, 0.44);
 }
 
 .gallery-item img {
@@ -320,6 +326,27 @@ h3 {
 
 .lightbox-copy p {
   margin-bottom: 0;
+}
+
+.gallery-pagination {
+  width: min(100%, var(--content-width));
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.gallery-page-link {
+  min-width: 1.9rem;
+  padding: 0.2rem 0.4rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+.gallery-page-link.is-current {
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
 }
 
 .image-overlay {

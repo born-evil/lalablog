@@ -1,78 +1,14 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import BaseLayout from "../layouts/BaseLayout.astro";
+import GalleryView from "../components/GalleryView.astro";
 
-const items = (await getCollection("gallery")).sort(
+const PAGE_SIZE = 12;
+
+const allItems = (await getCollection("gallery")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
+const totalPages = Math.max(1, Math.ceil(allItems.length / PAGE_SIZE));
+const items = allItems.slice(0, PAGE_SIZE);
 ---
 
-<BaseLayout title="Gallery">
-  <div class="gallery-grid">
-    {
-      items.map((item, index) => {
-        const previousItem = items[(index - 1 + items.length) % items.length];
-        const nextItem = items[(index + 1) % items.length];
-
-        return (
-        <>
-          <article class="gallery-item">
-            <a href={`#gallery-${item.slug}`} class="gallery-thumb">
-              <Image
-                src={item.data.image}
-                alt={item.data.caption ?? item.data.title}
-                width={600}
-                height={600}
-                fit="cover"
-                quality={90}
-                loading="lazy"
-              />
-            </a>
-          </article>
-
-          <div
-            id={`gallery-${item.slug}`}
-            class="lightbox"
-            aria-modal="true"
-            data-gallery-lightbox
-          >
-            <a href="#page-top" class="lightbox-backdrop" aria-label="Close enlarged image"></a>
-            <div class="lightbox-panel">
-              <a href="#page-top" class="lightbox-close" aria-label="Close enlarged image">Close</a>
-              {items.length > 1 && (
-                <>
-                  <a
-                    href={`#gallery-${previousItem.slug}`}
-                    class="lightbox-arrow lightbox-arrow-left"
-                    aria-label="Previous image"
-                  >
-                    ←
-                  </a>
-                  <a
-                    href={`#gallery-${nextItem.slug}`}
-                    class="lightbox-arrow lightbox-arrow-right"
-                    aria-label="Next image"
-                  >
-                    →
-                  </a>
-                </>
-              )}
-              <Image
-                src={item.data.image}
-                alt={item.data.caption ?? item.data.title}
-                width={1600}
-                fit="inside"
-                quality={95}
-              />
-              <div class="lightbox-copy">
-                <h2>{item.data.title}</h2>
-                {item.data.caption && <p>{item.data.caption}</p>}
-              </div>
-            </div>
-          </div>
-        </>
-      )})
-    }
-  </div>
-</BaseLayout>
+<GalleryView items={items} currentPage={1} totalPages={totalPages} />

@@ -234,8 +234,8 @@ const {
           };
 
           const queueNextFish = () => {
-            const minDelay = 150000;
-            const maxDelay = 300000;
+            const minDelay = 100000;
+            const maxDelay = 180000;
             const delay = minDelay + Math.random() * (maxDelay - minDelay);
 
             window.setTimeout(() => {
@@ -244,7 +244,7 @@ const {
             }, delay);
           };
 
-          const initialDelay = 45000 + Math.random() * 45000;
+          const initialDelay = 30000 + Math.random() * 30000;
           window.setTimeout(() => {
             if (document.visibilityState === "visible") spawnFish();
             queueNextFish();
