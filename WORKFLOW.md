@@ -39,7 +39,21 @@ Write your post here.
 ## Add an image inside a blog post
 
 1. Put the image in `src/content/blog/images/`
-2. Inside the post, use:
+2. Clean the image metadata in Terminal:
+
+```bash
+cd "/Users/yasmin/Desktop/CODEX THING"
+zsh ./scripts/clean-image-metadata.sh src/content/blog/images/your-image.jpg
+```
+
+3. If you want to double-check what metadata is left:
+
+```bash
+cd "/Users/yasmin/Desktop/CODEX THING"
+zsh ./scripts/check-image-metadata.sh src/content/blog/images/your-image.jpg
+```
+
+4. Inside the post, use:
 
 ```md
 ![Alt text](./images/your-image.jpg)
@@ -48,9 +62,23 @@ Write your post here.
 ## Add a new gallery image
 
 1. Put the image in `src/assets/gallery/`
-2. Open `src/content/gallery/`
-3. Create a file like `gallery8.md`
-4. Paste this:
+2. Clean the image metadata in Terminal:
+
+```bash
+cd "/Users/yasmin/Desktop/CODEX THING"
+zsh ./scripts/clean-image-metadata.sh src/assets/gallery/your-image.jpg
+```
+
+3. If you want to double-check what metadata is left:
+
+```bash
+cd "/Users/yasmin/Desktop/CODEX THING"
+zsh ./scripts/check-image-metadata.sh src/assets/gallery/your-image.jpg
+```
+
+4. Open `src/content/gallery/`
+5. Create a file like `gallery8.md`
+6. Paste this:
 
 ```md
 ---
@@ -63,6 +91,28 @@ category: "photography"
 ```
 
 Use `category: "art"` for artwork.
+
+## Fast privacy-safe image workflow
+
+Use this every time you add a new photo:
+
+1. Put the image in the correct folder
+2. Run:
+
+```bash
+cd "/Users/yasmin/Desktop/CODEX THING"
+zsh ./scripts/clean-image-metadata.sh path/to/your-image.jpg
+```
+
+3. If you want, verify it with:
+
+```bash
+cd "/Users/yasmin/Desktop/CODEX THING"
+zsh ./scripts/check-image-metadata.sh path/to/your-image.jpg
+```
+
+4. Save your post or gallery entry file
+5. Publish the site
 
 ## Publish changes
 
@@ -177,7 +227,8 @@ Or use:
 
 - Writing is usually low-risk
 - Photos are the main privacy concern
-- If a photo is sensitive, export a clean copy before uploading it
+- Before publishing new photos, run `zsh ./scripts/clean-image-metadata.sh`
+- If you want to inspect a file, run `zsh ./scripts/check-image-metadata.sh`
 
 ## Site details
 
