@@ -42,14 +42,14 @@ Write your post here.
 2. Clean the image metadata in Terminal:
 
 ```bash
-cd "/Users/yasmin/Desktop/CODEX THING"
+cd "/Users/yasmin/Desktop/lala"
 zsh ./scripts/clean-image-metadata.sh src/content/blog/images/your-image.jpg
 ```
 
 3. If you want to double-check what metadata is left:
 
 ```bash
-cd "/Users/yasmin/Desktop/CODEX THING"
+cd "/Users/yasmin/Desktop/lala"
 zsh ./scripts/check-image-metadata.sh src/content/blog/images/your-image.jpg
 ```
 
@@ -65,14 +65,14 @@ zsh ./scripts/check-image-metadata.sh src/content/blog/images/your-image.jpg
 2. Clean the image metadata in Terminal:
 
 ```bash
-cd "/Users/yasmin/Desktop/CODEX THING"
+cd "/Users/yasmin/Desktop/lala"
 zsh ./scripts/clean-image-metadata.sh src/assets/gallery/your-image.jpg
 ```
 
 3. If you want to double-check what metadata is left:
 
 ```bash
-cd "/Users/yasmin/Desktop/CODEX THING"
+cd "/Users/yasmin/Desktop/lala"
 zsh ./scripts/check-image-metadata.sh src/assets/gallery/your-image.jpg
 ```
 
@@ -100,14 +100,14 @@ Use this every time you add a new photo:
 2. Run:
 
 ```bash
-cd "/Users/yasmin/Desktop/CODEX THING"
+cd "/Users/yasmin/Desktop/lala"
 zsh ./scripts/clean-image-metadata.sh path/to/your-image.jpg
 ```
 
 3. If you want, verify it with:
 
 ```bash
-cd "/Users/yasmin/Desktop/CODEX THING"
+cd "/Users/yasmin/Desktop/lala"
 zsh ./scripts/check-image-metadata.sh path/to/your-image.jpg
 ```
 
@@ -119,7 +119,7 @@ zsh ./scripts/check-image-metadata.sh path/to/your-image.jpg
 Open Terminal and run:
 
 ```bash
-cd "/Users/yasmin/Desktop/CODEX THING"
+cd "/Users/yasmin/Desktop/lala"
 npm run build
 git add .
 git commit -m "Describe what you changed"
