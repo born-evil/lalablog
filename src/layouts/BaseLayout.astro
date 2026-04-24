@@ -38,7 +38,11 @@ const {
           <a class="site-link" href={leftLinkHref}>{leftLinkLabel}</a>
         </div>
         <div class="header-home">
-          <a class="home-flower" href="/" aria-label="Home">✿</a>
+          <a class="home-flower" href="/" aria-label="Home">
+            <span class="home-flower-side">⊹ ⊱</span>
+            <span class="home-flower-center">✿</span>
+            <span class="home-flower-side">⊰ ⊹</span>
+          </a>
         </div>
         <div class="header-side header-right">
           <nav aria-label="Primary">
@@ -67,6 +71,7 @@ const {
             <div class="image-overlay-panel">
               <button class="image-overlay-close" aria-label="Close enlarged image">Close</button>
               <img class="image-overlay-img" alt="" />
+              <p class="image-overlay-caption" hidden></p>
             </div>
           `;
 
@@ -87,6 +92,7 @@ const {
         const enhancePostImages = () => {
           const overlay = ensureImageOverlay();
           const overlayImage = overlay.querySelector(".image-overlay-img");
+          const overlayCaption = overlay.querySelector(".image-overlay-caption");
 
           document.querySelectorAll(".post-body img").forEach((image) => {
             if (image.closest(".post-image-button")) return;
@@ -100,6 +106,11 @@ const {
             button.addEventListener("click", () => {
               overlayImage?.setAttribute("src", image.currentSrc || image.src);
               overlayImage?.setAttribute("alt", image.alt || "");
+              if (overlayCaption instanceof HTMLElement) {
+                const caption = image.alt?.trim() ?? "";
+                overlayCaption.textContent = caption;
+                overlayCaption.hidden = caption.length === 0;
+              }
               overlay.classList.add("is-open");
             });
           });
@@ -131,6 +142,31 @@ const {
                 event.preventDefault();
               }
             }
+          });
+        };
+
+        const enableCursorRain = () => {
+          let lastSpawnTime = 0;
+          const sprinkleSymbols = ["˖", "˚", "✩", "*"];
+
+          document.addEventListener("pointermove", (event) => {
+            const now = Date.now();
+            if (now - lastSpawnTime < 180) return;
+            lastSpawnTime = now;
+
+            const drop = document.createElement("div");
+            const drift = (Math.random() - 0.5) * 12;
+            const duration = 1700 + Math.random() * 700;
+
+            drop.className = "cursor-rain";
+            drop.textContent =
+              sprinkleSymbols[Math.floor(Math.random() * sprinkleSymbols.length)];
+            drop.style.left = `${event.clientX + drift}px`;
+            drop.style.top = `${event.clientY - 4}px`;
+            drop.style.animationDuration = `${duration}ms`;
+
+            document.body.appendChild(drop);
+            window.setTimeout(() => drop.remove(), duration);
           });
         };
 
@@ -253,6 +289,7 @@ const {
 
         enhancePostImages();
         enhanceGalleryLightbox();
+        enableCursorRain();
         scheduleFish();
       })();
     </script>
