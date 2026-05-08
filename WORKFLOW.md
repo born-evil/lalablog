@@ -92,6 +92,34 @@ category: "photography"
 
 Use `category: "art"` for artwork.
 
+
+## Add a new gallery video
+
+1. Put the video in `public/videos/gallery/`
+2. Compress and clean it in Terminal:
+
+```bash
+cd "/Users/yasmin/Desktop/lala"
+zsh ./scripts/prepare-video-for-site.sh public/videos/gallery/your-video.mp4
+```
+
+3. Open `src/content/gallery/`
+4. Create a file like `gallery42.md`
+5. Paste this:
+
+```md
+---
+type: "video"
+title: "5 May 2026"
+date: 2026-05-05
+video: "/videos/gallery/your-video.mp4"
+caption: ""
+category: "art"
+---
+```
+
+Use `category: "photography"` if it belongs there.
+
 ## Fast privacy-safe image workflow
 
 Use this every time you add a new photo:
