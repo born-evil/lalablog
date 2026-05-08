@@ -123,13 +123,30 @@ const {
             return document.querySelector(currentHash);
           };
 
+          const pauseGalleryVideos = () => {
+            document.querySelectorAll(".lightbox-video").forEach((video) => {
+              if (video instanceof HTMLVideoElement) {
+                video.pause();
+              }
+            });
+          };
+
+          window.addEventListener("hashchange", pauseGalleryVideos);
+
           document.addEventListener("keydown", (event) => {
             const openLightbox = getOpenLightbox();
             if (!openLightbox) return;
 
+            if (event.key === "Escape") {
+              pauseGalleryVideos();
+              window.location.hash = "#page-top";
+              event.preventDefault();
+            }
+
             if (event.key === "ArrowLeft") {
               const previousLink = openLightbox.querySelector(".lightbox-arrow-left");
               if (previousLink instanceof HTMLAnchorElement) {
+                pauseGalleryVideos();
                 window.location.hash = previousLink.getAttribute("href") ?? "";
                 event.preventDefault();
               }
@@ -138,6 +155,7 @@ const {
             if (event.key === "ArrowRight") {
               const nextLink = openLightbox.querySelector(".lightbox-arrow-right");
               if (nextLink instanceof HTMLAnchorElement) {
+                pauseGalleryVideos();
                 window.location.hash = nextLink.getAttribute("href") ?? "";
                 event.preventDefault();
               }

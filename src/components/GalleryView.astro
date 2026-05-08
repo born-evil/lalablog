@@ -5,9 +5,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 interface GalleryItem {
   slug: string;
   data: {
+    type: "image" | "video";
     title: string;
     caption?: string;
-    image: any;
+    image?: any;
+    thumbnail?: string;
+    video?: string;
   };
 }
 
@@ -33,16 +36,44 @@ const pageHref = (page: number) => (page === 1 ? "/gallery/" : `/gallery/${page}
         return (
           <>
             <article class="gallery-item">
-              <a href={`#gallery-${item.slug}`} class="gallery-thumb">
-                <Image
-                  src={item.data.image}
-                  alt={item.data.caption ?? item.data.title}
-                  width={600}
-                  height={600}
-                  fit="cover"
-                  quality={90}
-                  loading="lazy"
-                />
+              <a
+                href={`#gallery-${item.slug}`}
+                class={`gallery-thumb${item.data.type === "video" ? " is-video" : ""}`}
+              >
+                {
+                  item.data.type === "video" ? (
+                    item.data.thumbnail ? (
+                      <img
+                        src={item.data.thumbnail}
+                        alt={item.data.caption ?? item.data.title}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <video
+                        class="gallery-thumb-video"
+                        src={`${item.data.video}#t=0.001`}
+                        muted
+                        playsinline
+                        preload="metadata"
+                      />
+                    )
+                  ) : (
+                    <Image
+                      src={item.data.image}
+                      alt={item.data.caption ?? item.data.title}
+                      width={600}
+                      height={600}
+                      fit="cover"
+                      quality={90}
+                      loading="lazy"
+                    />
+                  )
+                }
+                {
+                  item.data.type === "video" && (
+                    <span class="gallery-video-badge" aria-hidden="true">▶</span>
+                  )
+                }
               </a>
             </article>
 
@@ -52,34 +83,46 @@ const pageHref = (page: number) => (page === 1 ? "/gallery/" : `/gallery/${page}
               aria-modal="true"
               data-gallery-lightbox
             >
-              <a href="#page-top" class="lightbox-backdrop" aria-label="Close enlarged image"></a>
+              <a href="#page-top" class="lightbox-backdrop" aria-label="Close enlarged item"></a>
               <div class="lightbox-panel">
-                <a href="#page-top" class="lightbox-close" aria-label="Close enlarged image">Close</a>
+                <a href="#page-top" class="lightbox-close" aria-label="Close enlarged item">Close</a>
                 {items.length > 1 && (
                   <>
                     <a
                       href={`#gallery-${previousItem.slug}`}
                       class="lightbox-arrow lightbox-arrow-left"
-                      aria-label="Previous image"
+                      aria-label="Previous item"
                     >
                       ←
                     </a>
                     <a
                       href={`#gallery-${nextItem.slug}`}
                       class="lightbox-arrow lightbox-arrow-right"
-                      aria-label="Next image"
+                      aria-label="Next item"
                     >
                       →
                     </a>
                   </>
                 )}
-                <Image
-                  src={item.data.image}
-                  alt={item.data.caption ?? item.data.title}
-                  width={1600}
-                  fit="inside"
-                  quality={95}
-                />
+                {
+                  item.data.type === "video" ? (
+                    <video
+                      class="lightbox-video"
+                      src={item.data.video}
+                      controls
+                      playsinline
+                      preload="metadata"
+                    />
+                  ) : (
+                    <Image
+                      src={item.data.image}
+                      alt={item.data.caption ?? item.data.title}
+                      width={1600}
+                      fit="inside"
+                      quality={95}
+                    />
+                  )
+                }
                 <div class="lightbox-copy">
                   <h2>{item.data.title}</h2>
                   {item.data.caption && <p>{item.data.caption}</p>}
